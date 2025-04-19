@@ -10,9 +10,7 @@ verkaufspreis = st.number_input("🛒 Produktpreis (€)", min_value=0.0, step=0
 versandkosten = st.number_input("📦 Versandkosten (€)", min_value=0.0, step=0.01, value=3.99)
 produktkosten = st.number_input("🏷️ Einkaufskosten (€)", min_value=0.0, step=0.01, value=10.48)
 
-
 # Gewinnberechnung
-
 def berechne_gewinn(verkaufspreis, versandkosten, produktkosten, rabatt_prozent=0):
     rabattbetrag = verkaufspreis * (rabatt_prozent / 100)
     rabattierter_preis = verkaufspreis - rabattbetrag
@@ -29,23 +27,23 @@ def berechne_gewinn(verkaufspreis, versandkosten, produktkosten, rabatt_prozent=
 
     return {
         "Rabatt %": f"{rabatt_prozent}%",
-        "Rabattierter Preis": round(rabattierter_preis, 2),
-        "Gesamtgebühren": round(gesamtgebuehren, 2),
-        "Produktkosten": round(produktkosten, 2),
-        "Gewinn": round(gewinn, 2)
+        "Rabattierter Preis (€)": round(rabattierter_preis, 2),
+        "Gesamtgebühren (€)": round(gesamtgebuehren, 2),
+        "Produktkosten (€)": round(produktkosten, 2),
+        "Gewinn (€)": round(gewinn, 2)
     }
 
-
+# Tabelle vorbereiten
 rabattstufen = [0, 5, 10, 15, 20]
 ergebnisse = [berechne_gewinn(verkaufspreis, versandkosten, produktkosten, r) for r in rabattstufen]
 df = pd.DataFrame(ergebnisse)
 
 st.markdown("---")
 st.subheader("📊 Gewinnberechnung bei verschiedenen Rabatten")
-st.dataframe(df.style.format("{:.2f}").highlight_max(axis=0, color="lightgreen").highlight_min(axis=0, color="salmon"))
+st.write(df)
 
 # Highlight-Gewinn
-aktueller_gewinn = berechne_gewinn(verkaufspreis, versandkosten, produktkosten, 0)["Gewinn"]
+aktueller_gewinn = berechne_gewinn(verkaufspreis, versandkosten, produktkosten, 0)["Gewinn (€)"]
 st.markdown("---")
 st.subheader("💡 Wichtig")
 st.markdown(f"**Gewinn ohne Rabatt:** <span style='font-size:22px;color:green;font-weight:bold'>{aktueller_gewinn:.2f} €</span>", unsafe_allow_html=True)
